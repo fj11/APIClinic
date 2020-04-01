@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>TCMS</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/Navigation-Dark-Clean.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/Loading-Div.css' %}" />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+        <div class="container"><a class="navbar-brand" href="#Dashboard">API CLINIC</a>
+            <button data-toggle="collapse" data-target="#navcol-1" class="navbar-toggler"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav ml-auto">
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link active" href="test_plan">Test Plan</a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="test_run">Test Execution</a></li>
+                    <li class="nav-item dropdown"><a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" href="#">Profile </a>
+                        <div role="menu" class="dropdown-menu"><a role="presentation" class="dropdown-item" href="{% url 'logout' %}">Logout</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- New  button -->
+    <div class="text-center">
+        <button type="button" data-dismiss="modal" class="btn btn-success" id="new" style="position:fixed;bottom:10px;right:50px">New</button>
+    </div>
+
+    <!-- datatables -->
+    <table id="datatables" class="table table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Feature</th>
+                <th>Level</th>
+                <th>Method</th>
+                <th>Created By</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- TEST RESULT Modal -->
+    <div class="modal fade" id="result" role="dialog">
+        <div class="modal-dialog modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="result_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div style="margin: 0px;padding: 31px;">
+                        <div class="text-left row" style="width: 100%;margin: 0px;padding: 0px;height: 50%;">
+                            <div class="text-left column" style="width:50%">
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Expected Status: </label>
+                                    <div style="margin: 0px;">
+                                        <textarea style="margin: 20px;padding: 0px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-left column" style="width:50%">
+                                <div>
+                                    <div>
+                                        <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Real Status:</label>
+                                    </div>
+                                    <div>
+                                        <textarea style="margin: 20px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="text-left row" style="width: 100%;margin: 0px;padding: 0px;height: 50%;">
+                            <div class="text-left column" style="width:50%">
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Expected Data: </label>
+                                    <div>
+                                        <textarea style="margin: 20px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-left column" style="width:50%">
+                                <div>
+                                    <div>
+                                        <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Real Response Data:</label>
+                                    </div>
+                                    <div>
+                                        <textarea style="margin: 20px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW and EDIT Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        {% csrf_token %}
+                        <table>
+                            {{ test_case_form.as_table }}
+                        </table>
+                        <input type="hidden" id="type" name="type" value="">
+                        <button type="submit" id="save" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-ok"></span> OK
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="confirm" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <!-- The Modal -->
+    <div class="modal" id="detail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Test Case Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div id="detail">
+                        <div class="text-left row" style="width: 100%;margin: 15px;padding: 1px;height:50%">
+                            <div class="text-left column" style="width:50%">
+                                <div><label id="test_case_name_label" class="test_case_name" style="font-family: 'Abril Fatface', cursive;">Name: </label><label id="test_case_name" class="test_case_name"></label></div>
+                                <div><label id="test_case_status_label" class="test_case_status" style="font-family: 'Abril Fatface', cursive;">Status: </label><label id="test_case_status" class="test_case_status"></label></div>
+                                <div><label id="test_case_level_label" class="test_case_level" style="font-family: 'Abril Fatface', cursive;">Level: </label><label id="test_case_level" class="test_case_level"></label></div>
+                                <div><label id="test_case_created_by_label" class="test_case_created_by" style="font-family: 'Abril Fatface', cursive;">Created By: </label><label id="test_case_created_by" class="test_case_created_by"></label></div>
+                            </div>
+                            <div class="text-left column" style="width:50%">
+                                <div><label id="test_case_feature_label" class="test_case_feature" style="font-family: 'Abril Fatface', cursive;">Feature: </label><label id="test_case_feature" class="test_case_feature"></label></div>
+                                <div><label id="test_case_request_method_label" class="test_case_request_method" style="font-family: 'Abril Fatface', cursive;">Request Method: </label><label id="test_case_request_method" class="test_case_request_method"></label></div>
+                                <div><label id="test_case_created_date_label" class="test_case_created_date" style="font-family: 'Abril Fatface', cursive;">Created Date: </label><label id="test_case_created_date" class="test_case_created_date"></label></div>
+                                <div class="row">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                <div><label id="test_case_last_modify_date_label" class="test_case_last_modify_date" style="font-family: 'Abril Fatface', cursive;">Last Modify Date: </label><label id="test_case_last_modify_date" class="test_case_last_modify_date"></label></div>
+                            </div>
+                        </div>
+                        <div style="width: 100%;margin: 15px;padding: 1px;height:50%">
+                            <div>
+                                <div><label style="width: 50%;font-family: 'Abril Fatface', cursive;">Request URL: </label></div>
+                                <div><textarea id="test_case_request_url" style="width: 100%;height: 30px;"></textarea></div>
+                            </div>
+                            <div>
+                                <div><label style="font-family: 'Abril Fatface', cursive;">Request Headers: </label></div>
+                                <div><textarea id="test_case_request_headers" style="width:100%"></textarea></div>
+                            </div>
+                            <div>
+                                <div><label style="font-family: 'Abril Fatface', cursive;">Request Body: </label></div>
+                                <div><textarea id="test_case_request_body" style="width:100%"></textarea></div>
+                            </div>
+                            <div>
+                                <div><label style="font-family: 'Abril Fatface', cursive;">Expexted Response: </label></div>
+                                <div><textarea id="test_case_expected_response" style="width:100%"></textarea></div>
+                            </div>
+                            <div>
+                                <div><label style="font-family: 'Abril Fatface', cursive;">Expexted Data: </label></div>
+                                <div><textarea id="test_case_expected_data" style="width:100%"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="ldiv" class="loadingdiv" style="display:none;"><img class="loadingdivimg" src="{% static 'img/loading.gif' %}" /></div>
+
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.js.map"></script>-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/Fixed-navbar-starting-with-transparency.js' %}"></script>
+    <script src="{% static 'js/testcases.js' %}"></script>
+</body>
+
+</html>

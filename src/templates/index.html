@@ -1,0 +1,14 @@
+<!-- templates/index.html-->
+{% extends 'base.html' %}
+{% block title %}API CLINIC{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    {% block bar %}
+        {% csrf_token %}
+       {% include "test_plan.html" %}
+    {% endblock %}
+
+{% else %}
+  {% include "registration/login.html" %}
+{% endif %}
+{% endblock %}

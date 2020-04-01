@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html style="width: 100%;">
+    {% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>TCMS</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/Navigation-Dark-Clean.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/Loading-Div.css' %}" />
+</head>
+
+<body style="width: 100%;">
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+        <div class="container"><a class="navbar-brand" href="#">API CLINIC</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navcol-1">
+                <ul class="nav navbar-nav ml-auto">
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="test_plan">Test Plan</a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link active" href="test_run">Test Execution</a></li>
+                    <li class="nav-item dropdown"><a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" href="#">Profile </a>
+                        <div role="menu" class="dropdown-menu"><a role="presentation" class="dropdown-item" href="{% url 'logout' %}">Logout</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row" align="left" style="width: 90%;margin: 60px;height: 80%;">
+        <div id="search_area" style="width: 20%;height: 100%;"><input type="search" id="search_input" style="width: 100%;height: 10%;padding: 0px;">
+            <ul class="list-group" id="test_result_list_group" style="width: 100%;height: 90%;padding: 4px;">
+            </ul>
+        </div>
+        <div id="display_area" style="width: 70%;margin: 30px;">
+            <h1 class="text-center" id="head_display">Heading</h1>
+            <hr>
+            <div id="info_display" class="row" style="margin: 60px;">
+                <div style="width: 30%;margin: 0;"><label style="font-family: 'Abril Fatface', cursive;">Start Time:&nbsp; &nbsp;</label><label id="start_time_display"></label></div>
+                <div style="width: 30%;"><label style="font-family: 'Abril Fatface', cursive;">End Time:&nbsp; &nbsp;</label><label id="end_time_display"></label></div>
+                <div style="width: 30%;"><label style="font-family: 'Abril Fatface', cursive;">Duration:&nbsp; &nbsp;</label><label id="duration_time_display"></label></div>
+            </div>
+            <hr>
+            <div id="detail_display"></div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/Fixed-navbar-starting-with-transparency.js' %}"></script>
+    <script src="{% static 'js/testrun.js' %}"></script>
+
+</body>
+
+</html>

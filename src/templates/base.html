@@ -1,0 +1,16 @@
+<!-- templates/base.html -->
+
+<!DOCTYPE html>
+{% load bootstrap4 %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}API CLINIC{% endblock %}</title>
+</head>
+<body>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
