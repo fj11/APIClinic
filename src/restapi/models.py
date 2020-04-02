@@ -46,7 +46,6 @@ class TestCase(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     feature = models.ForeignKey(Feature, on_delete=models.CASCADE, blank=True, null=True)
     level = models.ForeignKey(CaseLevel, on_delete=models.CASCADE, blank=True, null=True)
-    #created_by = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, null=True, editable=False, on_delete=models.CASCADE, blank=True)
     created_by = CurrentUserField(editable=False, on_delete=models.CASCADE, blank=True, null=True)
     status = models.ForeignKey(TestCaseStatus, on_delete=models.CASCADE, blank=True, null=True)
     # tags = TaggableManager(blank=True)
@@ -58,8 +57,8 @@ class TestCase(models.Model):
     request_headers = models.TextField(blank=True, default="")
     request_URL = models.URLField(max_length=255, default="")
     request_body = models.TextField(blank=True, default="")
-    expected_response = models.TextField(default="")
-    expected_data = models.TextField(default="")
+    expected_response = models.TextField(blank=True, default="")
+    expected_data = models.TextField(blank=True, default="")
 
     def __str__(self):
         return self.name

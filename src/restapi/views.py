@@ -15,6 +15,7 @@ from multiprocessing import Pool, cpu_count
 from django.db.models import Q
 from model_utils import Choices
 import json
+import copy
 # Create your views here.
 
 ORDER_COLUMN_CHOICES = Choices(
@@ -148,21 +149,11 @@ class ListTestCaseView(APIView):
             return Response(result)
 
     def post(self, request):
-        request.POST._mutable = True
-        data = request.data
-
+        data = copy.deepcopy(request.data)
         caselevel = CaseLevel.objects.get(id=data["level"])
-
         method = APIMethod.objects.get(id=data["request_method"])
-
         feature = Feature.objects.get(id=data["feature"])
-
         test_case_status = TestCaseStatus.objects.get(id=data["status"])
-
-        # fields = ("id", "name", "feature", "level", "created_by", "request_method", "request_headers",
-        #           "request_URL", "request_body", "expected_data", "expected_response", "created_date",
-        #           "last_modify_date", "status")
-
         test_case = TestCase.objects.create(
                                                 name=data["name"],
                                                 feature=feature,
@@ -183,9 +174,11 @@ class ListTestCaseView(APIView):
         #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        request.POST._mutable = True
-        data = request.data
+
+        data = copy.deepcopy(request.data)
+        
         params = request.query_params
+        print(data, params)
         if "id" not in data and "id" not in params: 
             return Response("Id not found", status=status.HTTP_400_BAD_REQUEST)
         id = data["id"] if "id" in data else params['id']

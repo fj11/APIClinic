@@ -66,7 +66,7 @@ $('#datatables tbody').on('click', 'button', function () {
         $('#id_request_body').val(data['id_request_body']);
         $('#id_expected_data').val(data['expected_data']);
         $('#id_expected_response').val(data['expected_response']);
-        $('#type').val('edit');
+        $('#form_type').val('edit');
         $('#modal_title').text('EDIT');
         $("#myModal").modal();
     } else if (class_name == 'btn btn-primary'){
@@ -106,9 +106,7 @@ $('#datatables tbody').on('click', 'button', function () {
 
                     $("#result").modal();
 
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                });
+                })
         document.getElementById("ldiv").style.display = "display:none;";
 
     } else {
@@ -119,10 +117,10 @@ $('#datatables tbody').on('click', 'button', function () {
     id = data['id'];
 });
 
-$('form').on('submit', function (e) {
+$('#test_case_form').on('submit', function (e) {
     e.preventDefault();
     let $this = $(this);
-    let type = $('#type').val();
+    let type = $('#form_type').val();
     let method = '';
     let url = '/restapi/testcase/';
     if (type == 'new') {
@@ -132,19 +130,21 @@ $('form').on('submit', function (e) {
         // edit
         url = url + "?id=" + id + '';
         method = 'PUT';
-    }
-
+    };
     $.ajax({
         url: url,
         method: method,
-        data: $this.serialize()
+        headers: {
+            "X-CSRFTOken": getCookie('csrftoken')
+                },
+        data: $this.serialize(),
     }).done(function (data, textStatus, jqXHR) {
         location.reload();
 
-    }).error(function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-    });
+    })
 });
+
+
 
 $('#confirm').on('click', '#delete', function (e) {
 
@@ -153,17 +153,15 @@ $('#confirm').on('click', '#delete', function (e) {
         url: '/restapi/testcase/?id=' + id + '',
         method: 'DELETE',
         headers:{
-            "X-CSRFTOken": token
+            "X-CSRFTOken": getCookie('csrftoken')
         }
     }).done(function (data, textStatus, jqXHR) {
         location.reload();
-    }).error(function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-    });
+    })
 });
 
 $('#new').on('click', function (e) {
-    $('#type').val('new');
+    $('#form_type').val('new');
     $('#modal_title').text('New Test Case');
     $("#myModal").modal();
 
@@ -174,3 +172,30 @@ $('#save').on('click', function(e){
     location.reload();
 
 });
+
+function submit_form(){
+
+    let $this = $(this);
+    let type = $('#form_type').val();
+    let method = '';
+    let url = '/restapi/testcase/';
+    if (type == 'new') {
+        // new
+        method = 'POST';
+    } else {
+        // edit
+        url = url + "?id=" + id + '';
+        method = 'PUT';
+    };
+    $.ajax({
+        url: url,
+        method: method,
+        headers: {
+            "X-CSRFTOken": getCookie('csrftoken')
+                },
+        data: $this.serialize(),
+    }).done(function (data, textStatus, jqXHR) {
+        location.reload();
+
+    })
+}

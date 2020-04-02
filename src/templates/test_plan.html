@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>TCMS</title>
+    <title>API CLINIC</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/Navigation-Dark-Clean.css' %}" type="text/css">
@@ -126,12 +126,12 @@
                     <h4 class="modal-title" id="modal_title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form">
+                    <form id="test_case_form" role="form">
                         {% csrf_token %}
                         <table>
                             {{ test_case_form.as_table }}
                         </table>
-                        <input type="hidden" id="type" name="type" value="">
+                        <input type="hidden" id="form_type" name="type" value="">
                         <button type="submit" id="save" class="btn btn-success btn-block">
                             <span class="glyphicon glyphicon-ok"></span> OK
                         </button>
@@ -228,7 +228,7 @@
 
     <div id="ldiv" class="loadingdiv" style="display:none;"><img class="loadingdivimg" src="{% static 'img/loading.gif' %}" /></div>
 
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.js.map"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.js.map"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
