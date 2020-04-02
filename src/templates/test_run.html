@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
     <link rel="stylesheet" href="{% static 'css/Loading-Div.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/testrun.css' %}" />
 </head>
 
 <body style="width: 100%;">
@@ -30,12 +31,25 @@
         </div>
     </nav>
     <div class="row" align="left" style="width: 90%;margin: 60px;height: 80%;">
-        <div id="search_area" style="width: 20%;height: 100%;"><input type="search" id="search_input" style="width: 100%;height: 10%;padding: 0px;">
-            <ul class="list-group" id="test_result_list_group" style="width: 100%;height: 90%;padding: 4px;">
+        <div id="search_area" style="width: 25%;height: 100%;"><input type="search" id="search_input" style="width: 100%;height: 10%;padding: 0px;">
+            <ul class="list-group" id="test_result_list_group" style="width: 100%;height: 800px;padding: 4px;">
+
+                {% for test_result in test_results %}
+                    <a href="#" id="{{ test_result.id }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Functional Testing</h5>
+                            <button  type="button" class="btn btn-danger">Failed <span class="badge badge-light">{{ test_result.failed_number }}</span>
+                              </button>
+                            <button type="button" class="btn btn-primary">Passed <span class="badge badge-light">{{ test_result.pass_number }}</span>
+                            </button>
+                        </div>
+                        <p class="mb-1">{{ test_result.name }}</p>
+                    </a>
+                {% endfor %}
             </ul>
         </div>
         <div id="display_area" style="width: 70%;margin: 30px;">
-            <h1 class="text-center" id="head_display">Heading</h1>
+            <h1 class="text-center" id="head_display"></h1>
             <hr>
             <div id="info_display" class="row" style="margin: 60px;">
                 <div style="width: 30%;margin: 0;"><label style="font-family: 'Abril Fatface', cursive;">Start Time:&nbsp; &nbsp;</label><label id="start_time_display"></label></div>

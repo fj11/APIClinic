@@ -37,39 +37,35 @@ function httpPost(url, content){
     })
 
 }
-
-function testResultListItems(testResults){
-    for (i=testResults.length-1;i>0;i--){
-
-        testResult = testResults[i];
-        item = "<a href='#' class='list-group-item d-flex justify-content-between align-items-center' id=" + testResult["id"] + ">Test Result";
-
-        if (testResult["failed_number"] > 0){
-            item += "<span class='badge badge-danger badge-pill'>" + testResult["failed_number"] + "</span>";
-        }
-        // item += "<span class='badge badge-primary badge-pill'>" + testResult["pass_number"] + "</span>"
-        item += "</a>";
-        $("#test_result_list_group").append(item);
-    }
-}
-
-
-$( document ).ready(function() {
-    testResults = httpGet("/restapi/testresult/");
-    testResults.done(function(data){
-        testResultListItems(data);
-        $("#test_result_list_group a").click(function() {
-            url = "/restapi/testresult/?id=" + $(this).attr("id");
-            var testResult = httpGet(url);
-            testResult.done(function(data){
-                console.log(data);
-                $("#head_display").text(data["name"]);
-                $("#start_time_display").text(data["start_time"]);
-                $("#end_time_display").text(data["end_time"]);
-                $("#duration_time_display").text(data["duration"]);
-            })
-          });
+$('#test_result_list_group a').on('click', function (e) {
+    url = "/restapi/testresult/?id=" + $(this).attr("id");
+    var testResult = httpGet(url);
+    testResult.done(function(data){
+        $('#test_case_detail_list').remove();
+        $("#head_display").text(data["name"]);
+        $("#start_time_display").text(data["start_time"]);
+        $("#end_time_display").text(data["end_time"]);
+        $("#duration_time_display").text(data["duration"]);
+        updateTestCaseResultList(data["details"]);
     })
-    
+
 });
+
+function updateTestCaseResultList(testCaseResults){
+    listGroup = "<div id='test_case_detail_list' class='list-group'>"
+    for (i=0;i<testCaseResults.length;i++){
+        testCaseResult = testCaseResults[i];
+        if (testCaseResult['result'] == "PASS"){
+            listGroup += "<a href='#' class='list-group-item list-group-item-action list-group-item-primary'>" + testCaseResult["testcase"]['name'] + "</a>";
+
+        }
+        else{
+            listGroup += "<a href='#' class='list-group-item list-group-item-action list-group-item-danger'>"+ testCaseResult["testcase"]['name'] +"</a>";
+        }
+        
+    }
+    listGroup += "</div>"
+    $('#detail_display').append(listGroup);
+
+}
 
