@@ -26,12 +26,16 @@ def isValid(response, data):
     return codeValidation(status_code, data["expected_response"]) and stringValidation(content, data["expected_data"])
 
 def codeValidation(response_code, expected_code):
+    if expected_code == "":
+        return True
     return response_code == expected_code
 
 def dataValidation(response_data, expected_data):
     return stringValidation(response_data, expected_data) or keyValueValidation(response_data, expected_data)
 
 def stringValidation(response_data, expected_data):
+    if expected_data == "":
+        return True
     return response_data == expected_data
 
 def keyValueValidation(response_data, expected_data):

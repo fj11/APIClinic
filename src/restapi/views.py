@@ -1,7 +1,7 @@
 
 from django.core import serializers
 from django.http import JsonResponse
-from datetime import datetime
+import datetime
 from .models import Feature, TestCase, CaseLevel, APIMethod, TestRun,\
     TestResult, TestCaseResult, TestCaseStatus
 from .serializers import FeatureSerializer, TestCaseSerializer, \
@@ -178,7 +178,6 @@ class ListTestCaseView(APIView):
         data = copy.deepcopy(request.data)
         
         params = request.query_params
-        print(data, params)
         if "id" not in data and "id" not in params: 
             return Response("Id not found", status=status.HTTP_400_BAD_REQUEST)
         id = data["id"] if "id" in data else params['id']
@@ -289,7 +288,7 @@ class TestRunView(APIView):
                                                                         "request_headers",
                                                                         "status__name",
                                                                         "request_URL")
-        start_time = datetime.now()
+        start_time = datetime.datetime.now()
         pool = Pool(processes=cpu_count())
         results = pool.map(start, list(testcases))
 
@@ -311,7 +310,7 @@ class TestRunView(APIView):
         totalNumber = len(results)
         passNumber = len([i for i in results if i["result"] == "PASS"])
         failedNumber = totalNumber - passNumber
-        end_time = datetime.now()
+        end_time = datetime.datetime.now()
         test_result_model = TestResult.objects.create(
                 start_time = start_time,
                 end_time = end_time,
@@ -340,7 +339,6 @@ class TestCaseStatusView(APIView):
 class TestCaseResultView(APIView):
     def get(self, request):
         requestParams = request.query_params
-        print(requestParams['id'])
         if "id" in requestParams:
             testcaseresult = TestCaseResult.objects.get(id=requestParams["id"])
             serialized = TestCaseResultSerializer(testcaseresult, many=False)

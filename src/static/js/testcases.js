@@ -99,8 +99,10 @@ $('#datatables tbody').on('click', 'button', function () {
                 }).done(function (data, textStatus, jqXHR) {
                     $('#ldiv').hide();
                     if (data["details"][0]["result"] == "PASS"){
+                        $('#result_header').attr("class", "modal-title btn btn-primary");
                         $('#result_title').text('PASS');
                     } else {
+                        $('#result_header').attr("class", "modal-title btn btn-danger");
                         $('#result_title').text('FAILED');
                     }
 
