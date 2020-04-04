@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
     <link rel="stylesheet" href="{% static 'css/Loading-Div.css' %}" />
-
 </head>
 
 <body>
@@ -36,7 +35,7 @@
     <div class="text-center">
         <button type="button" data-dismiss="modal" class="btn btn-success" id="new">New</button>
     </div>
-
+    <div id="ldiv" class="loadingdiv" style="display:none;"><img class="loadingdivimg" id="loadingdivimg" src="{% static 'img/loading.gif' %}" /></div></div>
     <!-- datatables -->
     <table id="datatables" class="table table-hover" style="width:100%">
         <thead>
@@ -56,13 +55,12 @@
             </tr>
         </tfoot>
     </table>
-
     <!-- TEST RESULT Modal -->
     <div class="modal fade" id="result" role="dialog">
         <div class="modal-dialog modal-dialog modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header", id="result_header">
+                <div class="modal-header" , id="result_header">
                     <h4 class="modal-title" id="result_title"></h4>
                 </div>
                 <div class="modal-body">
@@ -72,7 +70,7 @@
                                 <div>
                                     <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Expected Status: </label>
                                     <div style="margin: 0px;">
-                                        <textarea style="margin: 20px;padding: 0px;"></textarea>
+                                        <textarea cols="40" rows="10" style="margin: 20px;padding: 0px;" id="test_result_expected_status"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +80,7 @@
                                         <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Real Status:</label>
                                     </div>
                                     <div>
-                                        <textarea style="margin: 20px;"></textarea>
+                                        <textarea cols="40" rows="10" style="margin: 20px;" id="test_result_real_status"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +91,7 @@
                                 <div>
                                     <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Expected Data: </label>
                                     <div>
-                                        <textarea style="margin: 20px;"></textarea>
+                                        <textarea cols="40" rows="10" style="margin: 20px;" id="test_result_expected_data"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +101,7 @@
                                         <label style="font-family: 'Abril Fatface', cursive;margin: 20px;">Real Response Data:</label>
                                     </div>
                                     <div>
-                                        <textarea style="margin: 20px;"></textarea>
+                                        <textarea cols="40" rows="10" style="margin: 20px;" id="test_result_real_data"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -174,44 +172,88 @@
                     <div id="detail">
                         <div class="text-left row" style="width: 100%;margin: 15px;padding: 1px;height:50%">
                             <div class="text-left column" style="width:50%">
-                                <div><label id="test_case_name_label" class="test_case_name" style="font-family: 'Abril Fatface', cursive;">Name: </label><label id="test_case_name" class="test_case_name"></label></div>
-                                <div><label id="test_case_status_label" class="test_case_status" style="font-family: 'Abril Fatface', cursive;">Status: </label><label id="test_case_status" class="test_case_status"></label></div>
-                                <div><label id="test_case_level_label" class="test_case_level" style="font-family: 'Abril Fatface', cursive;">Level: </label><label id="test_case_level" class="test_case_level"></label></div>
-                                <div><label id="test_case_created_by_label" class="test_case_created_by" style="font-family: 'Abril Fatface', cursive;">Created By: </label><label id="test_case_created_by" class="test_case_created_by"></label></div>
+                                <div>
+                                    <label id="test_case_name_label" class="test_case_name" style="font-family: 'Abril Fatface', cursive;">Name: </label>
+                                    <label id="test_case_name" class="test_case_name"></label>
+                                </div>
+                                <div>
+                                    <label id="test_case_status_label" class="test_case_status" style="font-family: 'Abril Fatface', cursive;">Status: </label>
+                                    <label id="test_case_status" class="test_case_status"></label>
+                                </div>
+                                <div>
+                                    <label id="test_case_level_label" class="test_case_level" style="font-family: 'Abril Fatface', cursive;">Level: </label>
+                                    <label id="test_case_level" class="test_case_level"></label>
+                                </div>
+                                <div>
+                                    <label id="test_case_created_by_label" class="test_case_created_by" style="font-family: 'Abril Fatface', cursive;">Created By: </label>
+                                    <label id="test_case_created_by" class="test_case_created_by"></label>
+                                </div>
                             </div>
                             <div class="text-left column" style="width:50%">
-                                <div><label id="test_case_feature_label" class="test_case_feature" style="font-family: 'Abril Fatface', cursive;">Feature: </label><label id="test_case_feature" class="test_case_feature"></label></div>
-                                <div><label id="test_case_request_method_label" class="test_case_request_method" style="font-family: 'Abril Fatface', cursive;">Request Method: </label><label id="test_case_request_method" class="test_case_request_method"></label></div>
-                                <div><label id="test_case_created_date_label" class="test_case_created_date" style="font-family: 'Abril Fatface', cursive;">Created Date: </label><label id="test_case_created_date" class="test_case_created_date"></label></div>
+                                <div>
+                                    <label id="test_case_feature_label" class="test_case_feature" style="font-family: 'Abril Fatface', cursive;">Feature: </label>
+                                    <label id="test_case_feature" class="test_case_feature"></label>
+                                </div>
+                                <div>
+                                    <label id="test_case_request_method_label" class="test_case_request_method" style="font-family: 'Abril Fatface', cursive;">Request Method: </label>
+                                    <label id="test_case_request_method" class="test_case_request_method"></label>
+                                </div>
+                                <div>
+                                    <label id="test_case_created_date_label" class="test_case_created_date" style="font-family: 'Abril Fatface', cursive;">Created Date: </label>
+                                    <label id="test_case_created_date" class="test_case_created_date"></label>
+                                </div>
                                 <div class="row">
                                     <div></div>
                                     <div></div>
                                     <div></div>
                                     <div></div>
                                 </div>
-                                <div><label id="test_case_last_modify_date_label" class="test_case_last_modify_date" style="font-family: 'Abril Fatface', cursive;">Last Modify Date: </label><label id="test_case_last_modify_date" class="test_case_last_modify_date"></label></div>
+                                <div>
+                                    <label id="test_case_last_modify_date_label" class="test_case_last_modify_date" style="font-family: 'Abril Fatface', cursive;">Last Modify Date: </label>
+                                    <label id="test_case_last_modify_date" class="test_case_last_modify_date"></label>
+                                </div>
                             </div>
                         </div>
                         <div style="width: 100%;margin: 15px;padding: 1px;height:50%">
                             <div>
-                                <div><label style="width: 50%;font-family: 'Abril Fatface', cursive;">Request URL: </label></div>
-                                <div><textarea id="test_case_request_url" style="width: 100%;height: 30px;"></textarea></div>
+                                <div>
+                                    <label style="width: 50%;font-family: 'Abril Fatface', cursive;">Request URL: </label>
+                                </div>
+                                <div>
+                                    <textarea id="test_case_request_url" style="width: 100%;height: 30px;"></textarea>
+                                </div>
                             </div>
                             <div>
-                                <div><label style="font-family: 'Abril Fatface', cursive;">Request Headers: </label></div>
-                                <div><textarea id="test_case_request_headers" style="width:100%"></textarea></div>
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;">Request Headers: </label>
+                                </div>
+                                <div>
+                                    <textarea id="test_case_request_headers" cols="40" rows="10" style="width:100%"></textarea>
+                                </div>
                             </div>
                             <div>
-                                <div><label style="font-family: 'Abril Fatface', cursive;">Request Body: </label></div>
-                                <div><textarea id="test_case_request_body" style="width:100%"></textarea></div>
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;">Request Body: </label>
+                                </div>
+                                <div>
+                                    <textarea id="test_case_request_body" cols="40" rows="10" style="width:100%"></textarea>
+                                </div>
                             </div>
                             <div>
-                                <div><label style="font-family: 'Abril Fatface', cursive;">Expexted Response: </label></div>
-                                <div><textarea id="test_case_expected_response" style="width:100%"></textarea></div>
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;">Expexted Response: </label>
+                                </div>
+                                <div>
+                                    <textarea id="test_case_expected_response" cols="40" rows="10" style="width:100%"></textarea>
+                                </div>
                             </div>
                             <div>
-                                <div><label style="font-family: 'Abril Fatface', cursive;">Expexted Data: </label></div>
-                                <div><textarea id="test_case_expected_data" style="width:100%"></textarea></div>
+                                <div>
+                                    <label style="font-family: 'Abril Fatface', cursive;">Expexted Data: </label>
+                                </div>
+                                <div>
+                                    <textarea id="test_case_expected_data" cols="40" rows="10" style="width:100%"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,8 +267,6 @@
             </div>
         </div>
     </div>
-
-    <div id="ldiv" class="loadingdiv" style="display:none;"><img class="loadingdivimg" src="{% static 'img/loading.gif' %}" /></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.js.map"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>

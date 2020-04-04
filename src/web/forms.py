@@ -13,3 +13,8 @@ class TestResultForm(ModelForm):
         model = TestResult
         fields = ("start_time", "end_time", "duration",
                   )
+
+class TestRunForm(ModelForm):
+    class Meta:
+        model = TestCase
+        fields = ("feature", "level", "status", "request_method")

@@ -5,10 +5,10 @@ API Clinic is a web service which can run rest api functional testing and perfor
 The people who use API Clinic can easily create/update/delete rest api test case in the test plan page, run functional and performance testing, check test result in the test execution page. For every test case, we provided some basic attributes, like feature, level, status, you can also add your new test case attribute as your requirments. 
 
 ### Test Plan View
-![test case](https://user-images.githubusercontent.com/4516800/78209514-3789e100-7475-11ea-9293-f1c4ef01c659.png)
+![test plan](https://user-images.githubusercontent.com/4516800/78416850-3930e180-75fa-11ea-8f32-b728c4593d1c.png)
 
 ### Test Execution View
-![test plan](https://user-images.githubusercontent.com/4516800/78209637-93ed0080-7475-11ea-9a00-93d550f112a2.png)
+![test run](https://user-images.githubusercontent.com/4516800/78416858-4c43b180-75fa-11ea-94fc-26ff37fd5ba4.png)
 
 ## Why API Clinic ?
 No matter how complicated your rest api test case is, The rest api testing only include three steps: 

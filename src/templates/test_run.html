@@ -31,7 +31,7 @@
         </div>
     </nav>
 
-    <!-- Test Case Result Detail -->
+    <!-- Test Case Result Detail Modal -->
     <div class="modal fade show bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"  id="test_case_result_detail">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -43,18 +43,18 @@
                             <div><textarea id="test_case_result_detail_request_url" style="width: 100%;"></textarea></div>
                         </div>
                         <div><label>Request Headers: </label>
-                            <div><textarea id="test_case_result_detail_request_headers" style="width: 100%;"></textarea></div>
+                            <div><textarea id="test_case_result_detail_request_headers" cols="40" rows="10" style="width: 100%;"></textarea></div>
                         </div>
                         <div><label>Request Body: </label>
-                            <div><textarea id="test_case_result_detail_request_body" style="width: 100%;"></textarea></div>
+                            <div><textarea id="test_case_result_detail_request_body" cols="40" rows="10" style="width: 100%;"></textarea></div>
                         </div>
                         <div class="row">
-                            <div style="width: 50%;"><label>Real Response Status: </label><textarea id="test_case_result_detail_real_status" style="width: 100%;"></textarea></div>
-                            <div style="width: 50%;"><label>Expected Response Status: </label><textarea id="test_case_result_detail_expected_status" style="width: 100%;"></textarea></div>
+                            <div style="width: 50%;"><label>Real Response Status: </label><textarea id="test_case_result_detail_real_status" cols="40" rows="10" style="width: 100%;"></textarea></div>
+                            <div style="width: 50%;"><label>Expected Response Status: </label><textarea id="test_case_result_detail_expected_status" cols="40" rows="10" style="width: 100%;"></textarea></div>
                         </div>
                         <div class="row">
-                            <div style="width: 50%;"><label>Real Response Data: </label><textarea id="test_case_result_detail_real_data" style="width: 100%;"></textarea></div>
-                            <div style="width: 50%;"><label>Expected Response Data: </label><textarea id="test_case_result_detail_expected_data" style="width: 100%;"></textarea></div>
+                            <div style="width: 50%;"><label>Real Response Data: </label><textarea id="test_case_result_detail_real_data" cols="40" rows="10" style="width: 100%;"></textarea></div>
+                            <div style="width: 50%;"><label>Expected Response Data: </label><textarea id="test_case_result_detail_expected_data" cols="40" rows="10" style="width: 100%;"></textarea></div>
                         </div>
                     </div>
                 </div>
@@ -100,8 +100,29 @@
             </div>
             <hr>
             <div id="detail_display"></div>
+            
+        </div>
+        <div id="ldiv" class="loadingdiv" style="display:none;"><img class="loadingdivimg" id="loadingdivimg" src="{% static 'img/loading.gif' %}" /></div>
+    </div>
+
+    
+    <!-- New test run modal -->
+    <div role="dialog" tabindex="-1" class="modal fade" id="new_test_run">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Test Exection</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    {% csrf_token %}
+                        <table>
+                            {{ test_run.as_table }}
+                        </table>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="add_new_run">Add</button></div>
+            </div>
         </div>
     </div>
+    
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 

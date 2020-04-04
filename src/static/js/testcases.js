@@ -43,7 +43,7 @@ let table = $('#datatables').DataTable({
                 "defaultContent": '<button type="button" class="btn btn-primary">Detail</button>' + '&nbsp;&nbsp' +
                 '<button type="button" class="btn btn-info">Edit</button>' + '&nbsp;&nbsp' +
                 '<button type="button" class="btn btn-danger">Delete</button>' + '&nbsp;&nbsp' +
-                '<button type="button" class="btn btn-warning">Run</button>'
+                '<button type="button" class="btn btn-warning">Test</button>'
             }
 
     ],
@@ -105,7 +105,10 @@ $('#datatables tbody').on('click', 'button', function () {
                         $('#result_header').attr("class", "modal-title btn btn-danger");
                         $('#result_title').text('FAILED');
                     }
-
+                    $('#test_result_expected_status').text(data["details"][0]["testcase"]["expected_response"]);
+                    $('#test_result_real_status').text(data["details"][0]["real_status"]);
+                    $('#test_result_expected_data').text(data["details"][0]["testcase"]["expected_data"]);
+                    $('#test_result_real_data').text(data["details"][0]["real_response"]);
                     $("#result").modal();
 
                 })
