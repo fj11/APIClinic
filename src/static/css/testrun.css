@@ -1,5 +1,15 @@
 #test_result_list_group{
     /* margin-bottom: 10px; */
     overflow:scroll;
+    max-height: 700px;
+    margin-bottom: 10px;
+    /* -webkit-overflow-scrolling: touch; */
+}
+
+#test_case_detail_list{
+    /* margin-bottom: 10px; */
+    max-height: 700px;
+    margin-bottom: 10px;
+    overflow:scroll;
     /* -webkit-overflow-scrolling: touch; */
 }
