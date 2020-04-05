@@ -69,6 +69,10 @@ class TestRun(models.Model):
     name = models.CharField(max_length=255, default="Run API Testing At: %s" % datetime.datetime.now().strftime("%c"),
                             editable=False)
     created_by = models.ForeignKey(User, null=True, editable=False, on_delete=models.CASCADE)
+    level = models.ForeignKey(CaseLevel, on_delete=models.CASCADE, null=True)
+    status = models.ForeignKey(TestCaseStatus, on_delete=models.CASCADE, null=True)
+    request_method = models.ForeignKey(APIMethod, on_delete=models.CASCADE, null=True)
+    feature = models.ForeignKey(Feature, on_delete=models.CASCADE, null=True)
     testcases = models.ManyToManyField(TestCase)
 
     def __str__(self):
@@ -83,6 +87,9 @@ class TestCaseResult(models.Model):
     real_response = models.TextField(max_length=10000, default='')
     duration = models.DurationField(max_length=100, null=True)
 
+    class Meta:
+        ordering = ['result']
+
 class TestResult(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     start_time = models.DateTimeField()
@@ -95,3 +102,6 @@ class TestResult(models.Model):
     failed_number = models.IntegerField(editable=False, default=0)
 
     details = models.ManyToManyField(TestCaseResult)
+
+    class Meta:
+        ordering = ['start_time']

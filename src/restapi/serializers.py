@@ -50,6 +50,7 @@ class TestRunSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "created_by", "start_time", "testcases")
 
 class TestResultSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = TestResult
         fields = ("id", "start_time", "end_time", "duration", "name",
@@ -62,3 +63,4 @@ class TestCaseResultSerializer(serializers.ModelSerializer):
         fields = ("id", "testcase", "result", "reason", "duration", "real_response", "real_status")
         depth = 1
 
+    

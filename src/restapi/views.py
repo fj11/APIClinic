@@ -149,6 +149,7 @@ class ListTestCaseView(APIView):
             return Response(result)
 
     def post(self, request):
+
         data = copy.deepcopy(request.data)
         caselevel = CaseLevel.objects.get(id=data["level"])
         method = APIMethod.objects.get(id=data["request_method"])
@@ -259,8 +260,8 @@ class TestRunView(APIView):
         return Response(serialized.data)
 
     def post(self, request):
-        request.POST._mutable = True
-        data = request.data
+        
+        data = copy.deepcopy(request.data)
         testResultList = list(TestResult.objects.all())
         while len(testResultList) > 9:
             tc = testResultList.pop(0)
@@ -279,7 +280,19 @@ class TestRunView(APIView):
                                                                         "status__name",
                                                                         "request_URL")
         else:
-            testcases = TestCase.objects.all().values( "id",
+            testcases = TestCase.objects.all()
+            if data['level'] != '---------':
+                testcases = testcases.filter(level__name=data['level'])
+            
+            if data['request_method'] != '---------':
+                testcases = testcases.filter(request_method__name=data['request_method'])
+            
+            if data['feature'] != '---------':
+                testcases = testcases.filter(feature__name=data['feature'])
+            if data['status'] != '---------':
+                testcases = testcases.filter(status__name=data['status'])
+
+            testcases = testcases.values( "id",
                                                                         "request_method__name", 
                                                                         "expected_response", 
                                                                         "request_body",
@@ -291,11 +304,10 @@ class TestRunView(APIView):
         start_time = datetime.datetime.now()
         pool = Pool(processes=cpu_count())
         results = pool.map(start, list(testcases))
-
+        # print(results)
         pool.close()
         pool.join()
         test_case_result_model = []
-        
         for result in results:
             t = TestCaseResult.objects.create(
                 testcase = TestCase.objects.get(id=result['id']),
@@ -306,7 +318,7 @@ class TestRunView(APIView):
                 duration = result['duration']
             )
             test_case_result_model.append(t)
-
+        
         totalNumber = len(results)
         passNumber = len([i for i in results if i["result"] == "PASS"])
         failedNumber = totalNumber - passNumber
@@ -319,11 +331,8 @@ class TestRunView(APIView):
                 pass_number = passNumber,
                 failed_number = failedNumber,
         )
-        
         test_result_model.details.set(test_case_result_model)
-
         serializer = TestResultSerializer(test_result_model, many=False)
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request):
@@ -350,6 +359,7 @@ class TestCaseResultView(APIView):
 class TestResultView(APIView):
     def get(self, request):
         requestParams = request.query_params
+        depth = requestParams['depth'] if 'depth' in requestParams else 1
         if "id" in requestParams:
             testresult = TestResult.objects.get(id=requestParams["id"])
             serialized = TestResultSerializer(testresult, many=False)

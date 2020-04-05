@@ -103,10 +103,10 @@ $('#new').on('click', function(e){
 })
 
 $("#add_new_run").on('click', function(e){
-
-    status = $('#id_feature :selected').text();
+    e.preventDefault();
+    feature = $('#id_feature :selected').text();
     level = $('#id_level :selected').text();
-    feature = $('#id_status :selected').text();
+    status = $('#id_status :selected').text();
     request_method = $('#id_request_method :selected').text();
 
     url = "/restapi/testrun/";

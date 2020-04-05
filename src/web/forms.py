@@ -1,6 +1,6 @@
 
 from django.forms import ModelForm
-from restapi.models import TestCase, TestResult
+from restapi.models import TestCase, TestResult, TestRun
 
 class TestCaseForm(ModelForm):
     class Meta:
@@ -16,5 +16,5 @@ class TestResultForm(ModelForm):
 
 class TestRunForm(ModelForm):
     class Meta:
-        model = TestCase
+        model = TestRun
         fields = ("feature", "level", "status", "request_method")

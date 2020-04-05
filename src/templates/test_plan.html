@@ -23,7 +23,7 @@
                     <li role="presentation" class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
                     <li role="presentation" class="nav-item"><a class="nav-link active" href="test_plan">Test Plan</a></li>
                     <li role="presentation" class="nav-item"><a class="nav-link" href="test_run">Test Execution</a></li>
-                    <li class="nav-item dropdown"><a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" href="#">Profile </a>
+                    <li class="nav-item dropdown"><a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" href="#">{{ user.get_username  }}</a>
                         <div role="menu" class="dropdown-menu"><a role="presentation" class="dropdown-item" href="{% url 'logout' %}">Logout</a></div>
                     </li>
                 </ul>

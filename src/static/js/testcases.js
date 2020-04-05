@@ -131,10 +131,13 @@ $('#test_case_form').on('submit', function (e) {
     if (type == 'new') {
         // new
         method = 'POST';
-    } else {
+    }else if(type == 'edit'){
         // edit
         url = url + "?id=" + id + '';
         method = 'PUT';
+    } else{
+        
+        return;
     };
     $.ajax({
         url: url,
@@ -187,10 +190,13 @@ function submit_form(){
     if (type == 'new') {
         // new
         method = 'POST';
-    } else {
+    }else if(type == 'edit'){
         // edit
         url = url + "?id=" + id + '';
         method = 'PUT';
+    } else{
+        
+        return;
     };
     $.ajax({
         url: url,
