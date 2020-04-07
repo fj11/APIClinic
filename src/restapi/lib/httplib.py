@@ -15,5 +15,4 @@ def sendRequest(**params):
         response = requests.put(url, data=body)
     elif method == "DELETE":
         response = requests.delete(url, headers=headers, data=body)
-
     return response

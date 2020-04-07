@@ -65,7 +65,8 @@
 
     <!-- New  button -->
     <div class="text-center">
-        <button type="button" data-dismiss="modal" class="btn btn-success" id="new">New</button>
+        <button type="button" data-dismiss="modal" class="btn btn-success" id="new_function">New Functional Testing</button>
+        <button type="button" data-dismiss="modal" class="btn btn-success" id="new_performance">New Functional Testing</button>
     </div>
 
     <div class="row" align="left" style="width: 90%;margin: 60px;height: 80%;">
@@ -75,7 +76,7 @@
                 {% for test_result in test_results %}
                     <a href="#" id="{{ test_result.id }}" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">Functional Testing</h5>
+                            <h5 class="mb-1">{{ test_result.result_type }} Testing</h5>
                             {% if test_result.failed_number %}
                                 <button  type="button" class="btn btn-danger">Failed <span class="badge badge-light">{{ test_result.failed_number }}</span>
                                 </button>
@@ -107,17 +108,31 @@
 
     
     <!-- New test run modal -->
-    <div role="dialog" tabindex="-1" class="modal fade" id="new_test_run">
+    <div role="dialog" tabindex="-1" class="modal fade" id="new_functional_test_run">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Test Exection</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                    <h4 class="modal-title">New Functional Test Exection</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                 <div class="modal-body">
                         <table>
                             {{ test_run.as_table }}
                         </table>
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="add_new_run">Add</button></div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="add_new_functional_run">Add</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New test run performance modal -->
+    <div role="dialog" tabindex="-1" class="modal fade" id="new_performance_test_run">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Performance Test Exection</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="add_new_performance_run">Add</button></div>
             </div>
         </div>
     </div>

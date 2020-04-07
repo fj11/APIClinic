@@ -11,11 +11,13 @@ from rest_framework.response import Response
 from rest_framework.views import status
 from django.core.exceptions import ObjectDoesNotExist
 from .lib.testEngine import start
+from .lib import loadEngine
 from multiprocessing import Pool, cpu_count
 from django.db.models import Q
 from model_utils import Choices
 import json
 import copy
+
 # Create your views here.
 
 ORDER_COLUMN_CHOICES = Choices(
@@ -302,37 +304,64 @@ class TestRunView(APIView):
                                                                         "status__name",
                                                                         "request_URL")
         start_time = datetime.datetime.now()
-        pool = Pool(processes=cpu_count())
-        results = pool.map(start, list(testcases))
-        # print(results)
-        pool.close()
-        pool.join()
-        test_case_result_model = []
-        for result in results:
-            t = TestCaseResult.objects.create(
-                testcase = TestCase.objects.get(id=result['id']),
-                result = result['result'],
-                reason = result['reason'],
-                real_status = result['real_status'],
-                real_response = result['real_response'],
-                duration = result['duration']
+        if data['type'] == "functional":
+            pool = Pool(processes=cpu_count())
+            results = pool.map(start, list(testcases))
+            # print(results)
+            pool.close()
+            pool.join()
+            test_case_result_model = []
+            for result in results:
+                t = TestCaseResult.objects.create(
+                    testcase = TestCase.objects.get(id=result['id']),
+                    result = result['result'],
+                    reason = result['reason'],
+                    real_status = result['real_status'],
+                    real_response = result['real_response'],
+                    duration = result['duration']
+                )
+                test_case_result_model.append(t)
+            
+            totalNumber = len(results)
+            passNumber = len([i for i in results if i["result"] == "PASS"])
+            failedNumber = totalNumber - passNumber
+            end_time = datetime.datetime.now()
+            test_result_model = TestResult.objects.create(
+                    start_time = start_time,
+                    end_time = end_time,
+                    duration = end_time - start_time,
+                    total_number = totalNumber,
+                    pass_number = passNumber,
+                    failed_number = failedNumber,
+                    result_type = "Functional"
             )
-            test_case_result_model.append(t)
-        
-        totalNumber = len(results)
-        passNumber = len([i for i in results if i["result"] == "PASS"])
-        failedNumber = totalNumber - passNumber
-        end_time = datetime.datetime.now()
-        test_result_model = TestResult.objects.create(
-                start_time = start_time,
-                end_time = end_time,
-                duration = end_time - start_time,
-                total_number = totalNumber,
-                pass_number = passNumber,
-                failed_number = failedNumber,
-        )
-        test_result_model.details.set(test_case_result_model)
-        serializer = TestResultSerializer(test_result_model, many=False)
+            test_result_model.details.set(test_case_result_model)
+            serializer = TestResultSerializer(test_result_model, many=False)
+        elif data['type'] == "performance":
+            data['start_time'] = start_time
+            results = loadEngine.start(testcases, data)
+            test_case_result_model = []
+            for result in results:
+                t = TestCaseResult.objects.create(
+                    testcase = TestCase.objects.get(id=result['id']),
+                    result = "PASS" if result['response_code'].keys() == 1 and result['response_code'].keys()[0] == 200 else "FAILED",
+                    real_status = result['response_code'],
+                    real_response = result['response_number'],
+                    duration = datetime.timedelta(seconds=result['response_time'])
+                )
+                test_case_result_model.append(t)
+            end_time = datetime.datetime.now()
+            test_result_model = TestResult.objects.create(
+                    start_time = start_time,
+                    end_time = end_time,
+                    duration = end_time - start_time,
+                    total_number = len(results),
+                    pass_number = 0,
+                    failed_number = 0,
+                    result_type = "Performance"
+            )
+            test_result_model.details.set(test_case_result_model)
+            serializer = TestResultSerializer(test_result_model, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request):

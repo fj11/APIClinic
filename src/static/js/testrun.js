@@ -53,12 +53,12 @@ $('#test_result_list_group a').on('click', function (e) {
         $("#start_time_display").text(data["start_time"]);
         $("#end_time_display").text(data["end_time"]);
         $("#duration_time_display").text(data["duration"]);
-        updateTestCaseResultList(data["details"]);
+        updateFunctionalTestCaseResultList(data["details"]);
     });
 
 });
 
-function updateTestCaseResultList(testCaseResults){
+function updateFunctionalTestCaseResultList(testCaseResults){
     listGroup = "<div id='test_case_detail_list' class='list-group'>"
     for (i=0;i<testCaseResults.length;i++){
         testCaseResult = testCaseResults[i];
@@ -96,13 +96,21 @@ function updateTestCaseResultList(testCaseResults){
 };
 
 
-$('#new').on('click', function(e){
+$('#new_function').on('click', function(e){
 
-    $('#new_test_run').modal();
+    $('#new_functional_test_run').modal();
+
+});
+
+$('#new_performance').on('click', function(e){
+
+    $('#new_performance_test_run').modal();
 
 })
 
-$("#add_new_run").on('click', function(e){
+
+
+$("#add_new_functional_run").on('click', function(e){
     e.preventDefault();
     feature = $('#id_feature :selected').text();
     level = $('#id_level :selected').text();
@@ -114,13 +122,40 @@ $("#add_new_run").on('click', function(e){
         "status": status,
         "level": level,
         "feature": feature,
-        "request_method": request_method
+        "request_method": request_method,
+        "type": "functional"
     };
-    $('#new_test_run').modal('hide');
+    $('#add_new_functional_run').modal('hide');
     document.getElementById("ldiv").style.display = "block";
     testrun = httpPost(url, content);
     testrun.done(function(data){
         $('#ldiv').hide();
+        location.reload();
+    });
+    document.getElementById("ldiv").style.display = "display:none;";
+
+})
+
+$("#add_new_performance_run").on('click', function(e){
+    e.preventDefault();
+    feature = $('#id_feature :selected').text();
+    level = $('#id_level :selected').text();
+    status = $('#id_status :selected').text();
+    request_method = $('#id_request_method :selected').text();
+
+    url = "/restapi/testrun/";
+    content = {
+        "testcases": "1e070c13-e7eb-426d-b00f-1fe9f1c2bac8",
+        "type": "performance",
+        "duration": 20,
+        "clients": 5
+    };
+    $('#add_new_performance_run').modal('hide');
+    document.getElementById("ldiv").style.display = "block";
+    testrun = httpPost(url, content);
+    testrun.done(function(data){
+        $('#ldiv').hide();
+        console.log(data);
         location.reload();
     });
     document.getElementById("ldiv").style.display = "display:none;";

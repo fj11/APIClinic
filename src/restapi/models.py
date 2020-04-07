@@ -100,7 +100,7 @@ class TestResult(models.Model):
     total_number = models.IntegerField(editable=False, default=0)
     pass_number = models.IntegerField(editable=False, default=0)
     failed_number = models.IntegerField(editable=False, default=0)
-
+    result_type = models.CharField(max_length=20, default="Functional")
     details = models.ManyToManyField(TestCaseResult)
 
     class Meta:
