@@ -138,17 +138,12 @@ $("#add_new_functional_run").on('click', function(e){
 
 $("#add_new_performance_run").on('click', function(e){
     e.preventDefault();
-    feature = $('#id_feature :selected').text();
-    level = $('#id_level :selected').text();
-    status = $('#id_status :selected').text();
-    request_method = $('#id_request_method :selected').text();
-
     url = "/restapi/testrun/";
     content = {
         "testcases": "1e070c13-e7eb-426d-b00f-1fe9f1c2bac8",
         "type": "performance",
-        "duration": 20,
-        "clients": 5
+        "duration": $("#duration").value,
+        "clients": $("#concurrent_user").value
     };
     $('#add_new_performance_run').modal('hide');
     document.getElementById("ldiv").style.display = "block";
