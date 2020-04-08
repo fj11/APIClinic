@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/Navigation-Dark-Clean.css' %}" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" type="text/css">
     <link rel="stylesheet" href="{% static 'css/Loading-Div.css' %}" />
     <link rel="stylesheet" href="{% static 'css/testrun.css' %}" />
 </head>
@@ -130,17 +132,46 @@
                 <div class="modal-header">
                     <h4 class="modal-title">New Performance Test Exection</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                 <div class="modal-body">
-
+                    <form>
+                        <!-- Default input -->
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">Concurrent Users</label>
+                          <input type="number" class="form-control" id="formGroupExampleInput" placeholder="Concurrent Users">
+                        </div>
+                        <!-- Default input -->
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Duration</label>
+                          <input type="number" class="form-control" id="formGroupExampleInput2" placeholder="Duration">
+                        </div>
+                        <table id="datatables" class="table table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Feature</th>
+                                    <th>Level</th>
+                                    <th>Method</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                    
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </form>
                 </div>
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="add_new_performance_run">Add</button></div>
             </div>
         </div>
     </div>
     
-    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
     <script src="{% static 'js/Fixed-navbar-starting-with-transparency.js' %}"></script>
     <script src="{% static 'js/testrun.js' %}"></script>
 

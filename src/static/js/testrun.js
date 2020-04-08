@@ -161,3 +161,57 @@ $("#add_new_performance_run").on('click', function(e){
     document.getElementById("ldiv").style.display = "display:none;";
 
 })
+
+let table = $('#datatables').DataTable({
+    processing: true,
+    serverSide: true,
+    scrollY:        300,
+    scrollX:        true,
+    scrollCollapse: true,
+    ajax: {
+        "url": "/restapi/testcase/",
+        "type": "GET",
+//        "dataSrc": ""
+    },
+
+    columnDefs: [
+        {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0,
+            data:null,
+            defaultContent: '',
+        },
+        {
+            targets: 1,
+            data:"id",
+            visible: false,
+            searchable: false
+        },
+        {
+            targets: 2,
+            data:"name",
+
+        },
+        {
+            targets: 3,
+            data:"feature.name",
+
+        },
+        {
+            targets: 4,
+            data:"level.name",
+
+        },
+        {
+            targets: 5,
+            data:"request_method.name",
+
+        }
+    ],
+    select: {
+        style:    'multi',
+    },
+
+});
+
