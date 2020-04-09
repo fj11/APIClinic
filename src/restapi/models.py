@@ -81,11 +81,17 @@ class TestRun(models.Model):
 class TestCaseResult(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     testcase = models.ForeignKey(TestCase, on_delete=models.CASCADE)
-    result = models.CharField(max_length=10)
-    reason = models.TextField(max_length=255)
+    result = models.CharField(max_length=10, null=True)
+    reason = models.TextField(max_length=255, null=True)
     real_status = models.CharField(max_length=100, default='')
     real_response = models.TextField(max_length=10000, default='')
-    duration = models.DurationField(max_length=100, null=True)
+    duration = models.DurationField(null=True)
+
+    status_code_success = models.IntegerField(default=0, null=True)
+    status_code_client_error = models.IntegerField(default=0, null=True)
+    status_code_server_error = models.IntegerField(default=0, null=True)
+    request_total_number = models.IntegerField(default=0, null=True)
+    response_time = models.DurationField(null=True)
 
     class Meta:
         ordering = ['result']

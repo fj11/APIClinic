@@ -53,10 +53,35 @@ $('#test_result_list_group a').on('click', function (e) {
         $("#start_time_display").text(data["start_time"]);
         $("#end_time_display").text(data["end_time"]);
         $("#duration_time_display").text(data["duration"]);
-        updateFunctionalTestCaseResultList(data["details"]);
+        if (data["result_type"] == "Performance"){
+            updatePerformanceTestCaseResultList(data["details"]);
+        }else{
+            updateFunctionalTestCaseResultList(data["details"]);
+        }
     });
 
 });
+
+function updatePerformanceTestCaseResultList(testCaseResults){
+
+    tables = "<table id='test_case_detail_list' class='table table-bordered table-dark'><thead><tr><th scope='col'>URL</th><th scope='col'>Method</th><th scope='col'>Request</th><th scope='col'>Time</th><th scope='col'>2xx</th><th scope='col'>4xx</th><th scope='col'>5xx</th></tr></thead><tbody>"
+
+    for (i=0;i<testCaseResults.length;i++){
+        
+        testCaseResult = testCaseResults[i];
+        url = testCaseResult["testcase"]["request_URL"];
+        method = testCaseResult["testcase"]["request_method"]["name"];
+        requestTotalNumber = testCaseResult["request_total_number"];
+        responseTime = testCaseResult["response_time"];
+        statusCodeSuccess = testCaseResult["status_code_success"];
+        statusCodeClientError = testCaseResult["status_code_client_error"]
+        statusCodeServerError = testCaseResult["status_code_server_error"]
+        row = "<tr><th scope='row'>"+ url +"</th><td>"+ method +"</td><td>"+ requestTotalNumber +"</td><td>" + responseTime + "</td><td>" + statusCodeSuccess + "</td><td>" + statusCodeClientError + "</td><td>" + statusCodeServerError + "</td></tr>";
+        tables += row;
+    };
+    tables += "</tbody></table>";
+    $('#detail_display').append(tables);
+};
 
 function updateFunctionalTestCaseResultList(testCaseResults){
     listGroup = "<div id='test_case_detail_list' class='list-group'>"
@@ -125,7 +150,7 @@ $("#add_new_functional_run").on('click', function(e){
         "request_method": request_method,
         "type": "functional"
     };
-    $('#add_new_functional_run').modal('hide');
+    $('#new_functional_test_run').modal('hide');
     document.getElementById("ldiv").style.display = "block";
     testrun = httpPost(url, content);
     testrun.done(function(data){
@@ -139,13 +164,18 @@ $("#add_new_functional_run").on('click', function(e){
 $("#add_new_performance_run").on('click', function(e){
     e.preventDefault();
     url = "/restapi/testrun/";
+    let ids = []
+    testcases = table.rows( { selected: true } ).data();
+    for (var i=0; i<testcases.length; i++){
+        ids.push(testcases[i]["id"]);
+    }
     content = {
-        "testcases": "1e070c13-e7eb-426d-b00f-1fe9f1c2bac8",
+        "testcases": ids.join(","),
         "type": "performance",
-        "duration": $("#duration").value,
-        "clients": $("#concurrent_user").value
+        "duration": $("#duration").val(),
+        "clients": $("#concurrent_user").val()
     };
-    $('#add_new_performance_run').modal('hide');
+    $('#new_performance_test_run').modal('hide');
     document.getElementById("ldiv").style.display = "block";
     testrun = httpPost(url, content);
     testrun.done(function(data){

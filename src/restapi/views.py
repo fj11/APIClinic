@@ -312,6 +312,7 @@ class TestRunView(APIView):
             pool.join()
             test_case_result_model = []
             for result in results:
+                print(result)
                 t = TestCaseResult.objects.create(
                     testcase = TestCase.objects.get(id=result['id']),
                     result = result['result'],
@@ -341,13 +342,15 @@ class TestRunView(APIView):
             data['start_time'] = start_time
             results = loadEngine.start(testcases, data)
             test_case_result_model = []
-            for result in results:
+            for tcId in results.keys():
+                result = results[tcId]
                 t = TestCaseResult.objects.create(
-                    testcase = TestCase.objects.get(id=result['id']),
-                    result = "PASS" if result['response_code'].keys() == 1 and result['response_code'].keys()[0] == 200 else "FAILED",
-                    real_status = result['response_code'],
-                    real_response = result['response_number'],
-                    duration = datetime.timedelta(seconds=result['response_time'])
+                    testcase = TestCase.objects.get(id=tcId),
+                    status_code_success = result['2xx'],
+                    status_code_client_error = result['4xx'],
+                    status_code_server_error = result['5xx'],
+                    request_total_number = result['response_number'],
+                    response_time = datetime.timedelta(seconds=result['response_time'])
                 )
                 test_case_result_model.append(t)
             end_time = datetime.datetime.now()

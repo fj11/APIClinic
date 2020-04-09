@@ -8,7 +8,11 @@ The people who use API Clinic can easily create/update/delete rest api test case
 ![test plan](https://user-images.githubusercontent.com/4516800/78416850-3930e180-75fa-11ea-8f32-b728c4593d1c.png)
 
 ### Test Execution View
-![test run](https://user-images.githubusercontent.com/4516800/78416858-4c43b180-75fa-11ea-94fc-26ff37fd5ba4.png)
+#### Functional Testing
+![run functional testing](https://user-images.githubusercontent.com/4516800/78854492-77117980-79ef-11ea-9a3e-a63b3119de0e.png)
+
+#### Performance Testing
+![run performance testing](https://user-images.githubusercontent.com/4516800/78854503-7e388780-79ef-11ea-98b3-72d8ded56919.png)
 
 ## Why API Clinic ?
 No matter how complicated your rest api test case is, The rest api testing only include three steps: 
