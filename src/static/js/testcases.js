@@ -92,7 +92,8 @@ $('#datatables tbody').on('click', 'button', function () {
         $.ajax({
                     url: '/restapi/testrun/',
                     method: "POST",
-                    data: {"testcases":data['id']},
+                    data: {"testcases":data['id'], 
+                            "type": "functional"},
                     headers:{
                         "X-CSRFTOken": getCookie('csrftoken')
                             }
